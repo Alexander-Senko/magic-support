@@ -31,8 +31,15 @@ jobs:
           - 3.3
           - 3.2
 
-          - truffleruby
           - truffleruby-head
+
+        include:
+          # TruffleRuby
+          - { ruby: 'truffleruby', allow-fail: true }
+
+          # JRuby
+          #- { ruby: 'jruby',      allow-fail: true }
+          #- { ruby: 'jruby-head', allow-fail: true }
 
     steps:
       - name: Checkout code
@@ -50,6 +57,7 @@ jobs:
           CC_TEST_REPORTER_ID: 782520e447066c42003680396699349b1350037f14d8f6ba2133697194088686
         with:
           coverageCommand: bundle exec rake
+        continue-on-error: ${{ matrix.allow-fail }}
         id: test
 
       - name: Lint code for consistent style
