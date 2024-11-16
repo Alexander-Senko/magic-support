@@ -1,0 +1,7 @@
+inherit_from:
+  - https://github.com/Alexander-Senko/Alexander-Senko/raw/refs/heads/main/.rubocop.yml
+  - https://github.com/Alexander-Senko/Alexander-Senko/raw/refs/heads/main/.rubocop-rspec.yml
+
+require:
+  - rubocop-rspec
+  - rubocop-rake
