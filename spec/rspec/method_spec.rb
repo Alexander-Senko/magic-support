@@ -71,5 +71,24 @@ RSpec.describe RSpec::Method do
 
 			describe('#pp') { it_behaves_like '.pp' }
 		end
+
+		describe ':delegated context' do
+			subject { self }
+
+			MyModule ||= Module.new { # rubocop:disable RSpec/LeakyConstantDeclaration
+				def self.my_method(*args) = args
+			}
+
+			def my_method(...) = MyModule.my_method(...)
+
+			describe '#my_method' do
+				it_behaves_like :delegated, to: MyModule
+
+				it_behaves_like :delegated, to: MyModule,
+						with: Object.new
+				it_behaves_like :delegated, to: MyModule,
+						with: 2.times.map { Object.new }
+			end
+		end
 	end
 end

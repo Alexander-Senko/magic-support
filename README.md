@@ -191,6 +191,23 @@ A method name is exposed as a `Symbol` via `method_name`.
 > [!NOTE]
 > `subject.name` may be undefined, use `method_name` instead.
 
+##### Delegated methods
+
+One can use `it_behaves_like :delegated` for delegated methods.
+This will ensure that calling the method calls the one of the same name on a delegate under the hood passing it the arguments.
+
+```ruby
+RSpec.describe MyClass do
+  describe '#method_with_arguments' do
+    it_behaves_like :delegated, to: delegate, with: [arg1, arg2]
+  end
+
+  describe '#method_without_arguments' do
+    it_behaves_like :delegated, to: delegate
+  end
+end
+```
+
 ##### Module specs
 
 It’s recommended to use class method notation, when writing specs for module functions.
