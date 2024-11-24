@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 require_relative 'lib/magic/support/version'
+require_relative 'lib/magic/support/authors'
 
 Gem::Specification.new do |spec|
 	spec.name        = 'magic-support'
 	spec.version     = Magic::Support::VERSION
-	spec.authors     = [ 'Alexander Senko' ]
-	spec.email       = %w[ Alexander.Senko@gmail.com ]
-	spec.homepage    = "https://github.com/Alexander-Senko/#{spec.name}"
+	spec.authors     = Magic::Support::Author.names
+	spec.email       = Magic::Support::Author.emails
+	spec.homepage    = "#{Magic::Support::Author.github_url}/#{spec.name}"
 	spec.summary     = 'Active Support extended'
 	spec.description = 'Utility classes and Ruby extensions beyond Active Support.'
 	spec.license     = 'MIT'
