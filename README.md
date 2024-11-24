@@ -77,6 +77,69 @@ gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
 	end
 	```
 
+## RSpec
+
+### Method specs
+
+Enables one to write specs for single methods.
+
+> [!WARNING]
+> Planed for extraction into a separate gem.
+
+#### Loading
+
+Require it in `spec_helper.rb`:
+
+```ruby
+require 'rspec/method'
+```
+
+#### Usage
+
+Include a method reference into the description.
+The reference should start with either
+- `.` for class methods or
+- `#` for instance ones.
+
+```ruby
+RSpec.describe MyClass do
+  describe '.class_method' do
+    its([arg1, arg2]) { is_expected.to be return_value }
+  end
+
+  describe '#instance_method' do
+    its([arg1, arg2]) { is_expected.to be return_value }
+  end
+end
+```
+
+> [!NOTE]
+> Though `rspec/its` is not needed, it could come useful (see [the article on method testing](
+> 	https://zverok.space/blog/2017-11-01-rspec-method-call.html
+> )).
+
+Within examples, `subject` is set to the corresponding `Method` instance.
+In cases when the method couldn’t be found (e.g., due to delegation via `method_missing`), it’s set to a `Proc` instance
+instead.
+Anyway, one may treat it as something _callable_.
+
+A method name is exposed as a `Symbol` via `method_name`.
+
+> [!NOTE]
+> `subject.name` may be undefined, use `method_name` instead.
+
+##### Module specs
+
+It’s recommended to use class method notation, when writing specs for module functions.
+
+```ruby
+RSpec.describe MyModule do
+  describe '.module_function' do 
+    # put the examples here
+  end
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
