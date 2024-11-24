@@ -27,4 +27,6 @@ Gem::Specification.new do |spec|
 	end
 
 	spec.required_ruby_version = '~> 3.2'
+
+	spec.add_dependency 'activesupport'
 end

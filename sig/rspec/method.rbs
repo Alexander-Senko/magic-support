@@ -1,0 +1,5 @@
+module RSpec
+	module Method
+		REFERENCE: Regexp
+	end
+end
