@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'active_support/concern'
+require 'magic/core_ext/kernel/optional'
 
 module RSpec # :nodoc:
 	module Method
@@ -66,6 +67,21 @@ module RSpec # :nodoc:
 
 	shared_context :method, description: Method::REFERENCE do
 		include Method::ExampleGroup
+
+		shared_context :delegated do |to:, with: nil|
+			before do
+				allow(to).to receive(method_name)
+						.optional { _1.with *with if with }
+						.and_call_original
+			end
+
+			it "delegates to #{to.inspect}" do
+				subject[*with]
+
+				expect(to).to have_received(method_name)
+						.once
+			end
+		end
 	end
 
 	configure do

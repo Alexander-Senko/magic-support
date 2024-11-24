@@ -13,3 +13,4 @@
 #### RSpec
 
 - API for method specs (`rspec/method`).
+	- API for delegated methods. 
