@@ -1,0 +1,11 @@
+module Gem
+	class Author < Struct[untyped]
+		module ClassMethods : Class
+			def names:      () -> Array[String]
+			def emails:     () -> Array[String]
+			def github_url: () -> String?
+		end
+
+		def github_url: () -> String?
+	end
+end

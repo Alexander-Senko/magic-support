@@ -33,9 +33,49 @@ If bundler is not being used to manage dependencies, install the gem by executin
 gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
 ```
 
-## Usage
+## Gems
 
-TODO: Write usage instructions here
+### Author
+
+It holds authors info to be used primarily in gem specs.
+
+#### Loading
+
+Pre-install Magic Support if you plan to use `Gem::Author` in your gemspec.
+
+```bash
+gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+```
+
+#### Usage
+
+1. Inherit `Gem::Author` inside your gem and add the authors’ info.
+
+	```ruby
+	require 'rubygems/author'
+	
+	module MyLib
+	  class Author < Gem::Author
+	    new(
+	      name:   'Your Name',
+	      email:  'Your.Name@email.service',
+	      github: 'Your-GitHub-Username',
+	    )
+	  end
+	end
+	```
+
+2. You can call some helper methods now.
+
+	```ruby
+	Gem::Specification.new do |spec|
+	  spec.name     = 'my_lib'
+	  spec.version  = MyLib::VERSION
+	  spec.authors  = MyLib::Author.names
+	  spec.email    = MyLib::Author.emails
+	  spec.homepage = "#{MyLib::Author.github_url}/#{spec.name}"
+	end
+	```
 
 ## Development
 
