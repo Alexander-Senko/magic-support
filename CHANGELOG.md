@@ -2,6 +2,10 @@
 
 ### Added
 
+#### `Kernel`
+
+- `#optional` as a conditional `#then`.
+
 #### Gems
 
 - `Gem::Author` for authors info to be used primarily in gem specs.

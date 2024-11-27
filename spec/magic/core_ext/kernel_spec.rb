@@ -7,6 +7,34 @@ RSpec.describe Kernel do
 	subject { Object.new }
 
 	let(:object) { Object.new }
+
+	describe '#optional' do
+		let(:block) { -> receiver { condition and object } }
+
+		context 'when the block returns a truthy value' do
+			let(:condition) { true }
+
+			it 'returns the value' do
+				expect(subject.(&block)).to be object
+			end
+		end
+
+		context 'when the block returns nil' do
+			let(:condition) { nil }
+
+			it 'returns self' do
+				expect(subject.(&block)).to be subject.receiver
+			end
+		end
+
+		context 'when the block returns false' do
+			let(:condition) { false }
+
+			it 'returns self' do
+				expect(subject.(&block)).to be subject.receiver
+			end
+		end
+	end
 end
 
 # Every method defined on `Kernel` should be defined on some other
