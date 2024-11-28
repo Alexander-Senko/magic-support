@@ -1,5 +1,7 @@
 module Magic
 	module CoreExt
 		def require_all: (?String) -> Array[Pathname]
+
+		def kernel: () { () -> void } -> Module
 	end
 end
