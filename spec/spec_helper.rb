@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rspec/its'
+require 'rspec/method'
 require 'simplecov'
 
 SimpleCov.start do
