@@ -33,6 +33,44 @@ If bundler is not being used to manage dependencies, install the gem by executin
 gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
 ```
 
+## Core extensions
+
+### Loading
+
+Magic Support is broken into small pieces so that only the desired extensions can be loaded.
+It also has some convenience entry points to load related extensions in one shot, even all of them.
+
+#### Cherry-picking
+
+For every single method defined as a core extension a note says where such a method is defined.
+
+That means that you can `require` it like this:
+
+```ruby
+require 'magic/core_ext/<module>/<extension>'
+```
+
+Magic Support has been carefully revised so that cherry-picking a file loads only strictly needed dependencies, if any.
+
+#### Loading grouped core extensions
+
+As a rule of thumb, extensions to `SomeClass` are available in
+one shot by loading `magic/core_ext/some_class`.
+
+Thus, to load all extensions to `Kernel`:
+
+```ruby
+require 'magic/core_ext/kernel'
+```
+
+#### Loading all core extensions
+
+You may prefer just to load all core extensions, there is a file for that:
+
+```ruby
+require 'magic/core_ext'
+```
+
 ## Gems
 
 ### Author

@@ -1,0 +1,5 @@
+module Magic
+	module CoreExt
+		def require_all: (?String) -> Array[Pathname]
+	end
+end
