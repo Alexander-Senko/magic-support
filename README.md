@@ -104,7 +104,21 @@ It holds authors info to be used primarily in gem specs.
 
 #### Loading
 
-Pre-install Magic Support if you plan to use `Gem::Author` in your gemspec.
+> [!NOTE]
+> If you plan to use `Gem::Author` in your gemspec, it should be loaded before the gemspec.
+
+Add Magic Support as a plugin to the application’s Gemfile.
+
+```ruby
+plugin 'magic-support'
+gem    'magic-support'
+```
+
+> [!IMPORTANT]
+> This will work with `bundle install`, but not with every Bundler command.
+> E.g., `bundle lock` used by GitHub with Bundler cache will fail.
+
+If bundler is not being used or fails to load, pre-install the gem by executing:
 
 ```bash
 gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG

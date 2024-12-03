@@ -1,3 +1,12 @@
+## [0.2.0] — UNRELEASED
+
+### Added
+
+#### Gems
+
+- A Bundler plugin to wrap all the stuff being used in gem specs.
+
+
 ## [0.1.0] — 2024-11-28
 
 ### Added
