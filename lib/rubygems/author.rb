@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'bundler'
+
 module Gem # :nodoc:
 	# # Gem Author
 	#
@@ -53,10 +55,20 @@ module Gem # :nodoc:
 		module self::ClassMethods # rubocop:disable Lint, Style
 			def new(...) = (@all ||= []) << super
 
+			def default = new
+
 			def names      = all.filter_map &:name
 			def emails     = all.filter_map &:email
 			def github_url = all.filter_map(&:github_url).first
 		end
+
+		def initialize(
+				name:   `git config user.name`.strip,
+				email:  `git config user.email`.strip,
+				github: Bundler.settings['gem.github_username'],
+
+				**
+		) = super
 
 		def github_url = github && "https://github.com/#{github}"
 	end

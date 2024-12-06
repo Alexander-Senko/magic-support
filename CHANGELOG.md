@@ -5,6 +5,7 @@
 #### Gems
 
 - A Bundler plugin to wrap all the stuff being used in gem specs.
+- Read author info from Git and Bundler settings by default.
 
 
 ## [0.1.0] — 2024-11-28
