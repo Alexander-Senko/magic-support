@@ -45,6 +45,7 @@ jobs:
       matrix:
         ruby:
           - head
+          - 3.4
           - 3.3
           - 3.2
 
@@ -55,8 +56,8 @@ jobs:
           - { ruby: 'truffleruby', allow-fail: true }
 
           # JRuby
-          #- { ruby: 'jruby',      allow-fail: true }
-          #- { ruby: 'jruby-head', allow-fail: true }
+          - { ruby: 'jruby',      allow-fail: true }
+          - { ruby: 'jruby-head', allow-fail: true }
 
     steps:
       - name: Checkout code
