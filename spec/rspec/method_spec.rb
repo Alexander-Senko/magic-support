@@ -8,15 +8,19 @@ RSpec.describe RSpec::Method do
 	end
 
 	describe ':method context' do
-		subject { Object.new }
+		subject { object }
+
+		let(:object) { Object.new }
 
 		describe '.new' do
+			it { expect(receiver).to eq object.class }
 			it { expect(method_name).to eq :new }
 
 			its_result { is_expected.to be_instance_of Object }
 		end
 
 		describe '#to_s' do
+			it { expect(receiver).to eq object }
 			it { expect(method_name).to eq :to_s }
 
 			its_result { is_expected.to be_a String }
@@ -32,6 +36,7 @@ RSpec.describe RSpec::Method do
 
 		context 'when private' do
 			describe '#puts' do
+				it { expect(receiver).to eq object }
 				it { expect(method_name).to eq :puts }
 
 				its_result { is_expected.to be_nil }
@@ -39,10 +44,39 @@ RSpec.describe RSpec::Method do
 		end
 
 		context 'when missing' do
+			let :have_emitted_warning do
+				have_received(:warn)
+						.with(/Testing undefined method/)
+			end
+
+			before { allow(self).to receive :warn }
+
 			describe '#undefined_method' do
+				it { expect(receiver).to eq object }
 				it { expect(method_name).to eq :undefined_method }
 
 				it { expect { subject[] }.to raise_error NoMethodError }
+				it { expect { subject   }.not_to raise_error }
+
+				it 'emits a warning' do
+					subject
+
+					expect(self).to have_emitted_warning
+							.once
+				end
+
+				context 'with bugs' do
+					let(:method_name) { name }
+
+					it { expect { subject[] }.to raise_error NoMethodError }
+					it { expect { subject   }.to raise_error NoMethodError }
+
+					it 'doesn’t emit a warning' do
+						subject rescue nil
+
+						expect(self).not_to have_emitted_warning
+					end
+				end
 			end
 		end
 
@@ -50,6 +84,9 @@ RSpec.describe RSpec::Method do
 			subject { Object }
 
 			shared_examples '.new' do
+				it { expect(receiver).to eq Object }
+				it { expect(method_name).to eq :new }
+
 				its_result { is_expected.to be_instance_of Object }
 			end
 
@@ -62,6 +99,9 @@ RSpec.describe RSpec::Method do
 			subject { Kernel }
 
 			shared_examples '.pp' do
+				it { expect(receiver).to eq Kernel }
+				it { expect(method_name).to eq :pp }
+
 				its_result                                  { is_expected.to be_nil }
 				its_result(argument = Object.new)           { is_expected.to eq argument }
 				its(arguments = 2.times.map { Object.new }) { is_expected.to eq arguments }

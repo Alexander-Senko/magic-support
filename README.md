@@ -186,6 +186,7 @@ In cases when the method couldn’t be found (e.g., due to delegation via `metho
 instead.
 Anyway, one may treat it as something _callable_.
 
+A receiver object is exposed via `receiver`.
 A method name is exposed as a `Symbol` via `method_name`.
 
 > [!NOTE]

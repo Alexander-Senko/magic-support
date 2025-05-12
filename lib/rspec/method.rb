@@ -30,22 +30,15 @@ module RSpec # :nodoc:
 					subject_method = subject_method.super_method or break
 				end
 
-				define_method :subject do
-					receiver =
-							case [ scope, subject_method&.bind_call(self) || super() ]
-							in '#', receiver
-								receiver
-							in '.', Module => receiver
-								receiver
-							in '.', receiver
-								receiver.class
-							end
-
-					receiver.method name
-				rescue NameError
-					# TODO: emit a warning
-
-					-> *args { receiver.send name, *args }
+				let :receiver do
+					case [ scope, subject_method&.bind_call(self) || super() ]
+					in '#', receiver
+						receiver
+					in '.', Module => receiver
+						receiver
+					in '.', receiver
+						receiver.class
+					end
 				end
 
 				let(:method_name) { name.to_sym }
@@ -61,6 +54,17 @@ module RSpec # :nodoc:
 				next unless defined? RSpec::Its
 
 				def its_result(*args, &) = its(args, &)
+			end
+
+			def subject
+				receiver.method method_name
+			rescue NameError => error
+				raise unless
+						(receiver.is_a? error.receiver rescue false)
+
+				warn "Testing #{error}"
+
+				-> *args { receiver.send method_name, *args }
 			end
 		end
 	end

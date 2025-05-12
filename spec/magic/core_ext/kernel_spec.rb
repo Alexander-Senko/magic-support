@@ -23,7 +23,7 @@ RSpec.describe Kernel do
 			let(:condition) { nil }
 
 			it 'returns self' do
-				expect(subject.(&block)).to be subject.receiver
+				expect(subject.(&block)).to be receiver
 			end
 		end
 
@@ -31,7 +31,7 @@ RSpec.describe Kernel do
 			let(:condition) { false }
 
 			it 'returns self' do
-				expect(subject.(&block)).to be subject.receiver
+				expect(subject.(&block)).to be receiver
 			end
 		end
 	end

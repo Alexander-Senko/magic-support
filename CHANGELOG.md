@@ -1,3 +1,19 @@
+## [0.2.0] — UNRELEASED
+
+### RSpec
+
+#### Method specs
+
+##### Added
+
+- Receiver objects are exposed via `receiver`.
+- Emit warnings on missing methods.
+
+##### Fixed
+
+- Don’t swallow unrelated name errors.
+
+
 ## [0.1.0] — 2024-11-28
 
 ### Added

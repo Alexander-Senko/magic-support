@@ -1,5 +1,9 @@
 module RSpec
 	module Method
 		REFERENCE: Regexp
+
+		module ExampleGroup
+			def subject: () -> (::Method | Proc)
+		end
 	end
 end
