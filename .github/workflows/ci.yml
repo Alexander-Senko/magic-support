@@ -12,6 +12,8 @@ on:
       - Gemfile*
       - '*.gemspec'
       - .github/workflows/ci.yml
+      - .rspec*
+      - .rubocop*
       - '!**/version.rb'
 
   pull_request:
@@ -21,7 +23,22 @@ on:
       - '**/version.rb'
 
 jobs:
-  build:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: head
+          bundler-cache: true
+
+      - name: Lint code for consistent style
+        run: bin/rubocop -f github
+
+  test:
     runs-on: ubuntu-latest
     name: Ruby ${{ matrix.ruby }}
     strategy:
@@ -59,10 +76,6 @@ jobs:
           coverageCommand: bundle exec rake
         continue-on-error: ${{ matrix.allow-fail }}
         id: test
-
-      - name: Lint code for consistent style
-        run: bin/rubocop -f github
-        if: ${{ matrix.ruby == 'head' }}
 
       - name: >-
           Test ${{ steps.test.outcome }}
