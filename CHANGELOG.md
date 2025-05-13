@@ -1,3 +1,14 @@
+## [0.2.1] — 2025-05-13
+
+### RSpec
+
+#### Method specs
+
+##### Fixed
+
+- Method specs with implicit subjects got broken in v0.2.0.
+
+
 ## [0.2.0] — 2025-05-13
 
 ### Core extensions

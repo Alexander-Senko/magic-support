@@ -30,8 +30,14 @@ module RSpec # :nodoc:
 					subject_method = subject_method.super_method or break
 				end
 
+				if subject_method
+					let(:__subject__) { subject_method.bind_call self }
+				else
+					let(:__subject__) { method(:subject).super_method[] }
+				end
+
 				let :receiver do
-					case [ scope, subject_method&.bind_call(self) || super() ]
+					case [ scope, __subject__ ]
 					in '#', receiver
 						receiver
 					in '.', Module => receiver
