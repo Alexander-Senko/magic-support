@@ -1,5 +1,12 @@
 ## [0.2.0] — UNRELEASED
 
+### Core extensions
+
+#### Fixed
+
+- Don’t forget to `require 'pathname'` as it’s not a core class.
+- Don’t load all core extensions unless required explicitly.
+
 ### RSpec
 
 #### Method specs

@@ -1,0 +1,5 @@
+module Magic
+	module Loader
+		def require_all: (?(String | Pathname)) -> Array[Pathname]
+	end
+end

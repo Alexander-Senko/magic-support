@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'magic/core_ext'
+require_relative 'utils'
 
 Magic::CoreExt.kernel do
 	# Yields self to the block and returns the result of the block if it’s
