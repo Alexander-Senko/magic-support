@@ -1,0 +1,7 @@
+module RSpec
+	module Method
+		module Its
+			def its_result: (*untyped) -> void
+		end
+	end
+end

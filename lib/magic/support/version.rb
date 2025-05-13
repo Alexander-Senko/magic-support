@@ -2,6 +2,6 @@
 
 module Magic
 	module Support
-		VERSION = '0.2.1'
+		VERSION = '0.3.0.alpha'
 	end
 end

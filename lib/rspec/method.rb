@@ -21,33 +21,7 @@ module RSpec # :nodoc:
 			included do
 				metadata[:type] ||= :method
 
-				description.match(REFERENCE) in { scope:, name: } or
-						raise ArgumentError, "'#{description}' doesn't look like a method reference"
-
-				subject_method = instance_method :subject
-
-				while subject_method.owner.then { not _1.respond_to? :metadata or _1.metadata[:method] }
-					subject_method = subject_method.super_method or break
-				end
-
-				if subject_method
-					let(:__subject__) { subject_method.bind_call self }
-				else
-					let(:__subject__) { method(:subject).super_method[] }
-				end
-
-				let :receiver do
-					case [ scope, __subject__ ]
-					in '#', receiver
-						receiver
-					in '.', Module => receiver
-						receiver
-					in '.', receiver
-						receiver.class
-					end
-				end
-
-				let(:method_name) { name.to_sym }
+				setup_method_context
 			end
 
 			class_methods do
@@ -57,9 +31,41 @@ module RSpec # :nodoc:
 					}
 				end
 
-				next unless defined? RSpec::Its
+				private
 
-				def its_result(*args, &) = its(args, &)
+				def setup_method_context
+					description.match(REFERENCE) in { scope:, name: } or
+							raise ArgumentError, "'#{description}' doesn't look like a method reference"
+
+					backup_subject
+
+					let :receiver do
+						case [ scope, __subject__ ]
+						in '#', receiver
+							receiver
+						in '.', Module => receiver
+							receiver
+						in '.', receiver
+							receiver.class
+						end
+					end
+
+					let(:method_name) { name.to_sym }
+				end
+
+				def backup_subject
+					subject_method = instance_method :subject
+
+					while subject_method.owner.then { not _1.respond_to? :metadata or _1.metadata[:method] }
+						subject_method = subject_method.super_method or break
+					end
+
+					if subject_method
+						let(:__subject__) { subject_method.bind_call self }
+					else
+						let(:__subject__) { method(:subject).super_method[] }
+					end
+				end
 			end
 
 			def subject
@@ -74,6 +80,8 @@ module RSpec # :nodoc:
 			end
 		end
 	end
+
+	require_relative 'method/its' if defined? Its
 
 	shared_context :method, description: Method::REFERENCE do
 		include Method::ExampleGroup
