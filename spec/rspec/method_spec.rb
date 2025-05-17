@@ -40,8 +40,18 @@ RSpec.describe RSpec::Method do
 				context 'with an overridden subject' do
 					subject { :new_subject }
 
-					# NOTE: it’s still `Object#to_s`, not `Symbol#to_s`
-					its_result { is_expected.to match /\A#<Symbol:0x\h+>\Z/ }
+					it { expect(receiver).to eq :new_subject }
+
+					its_result { is_expected.to eq 'new_subject' }
+
+					context 'with a named one' do
+						subject(:object) { :new_object }
+
+						it { expect(receiver).to eq :new_object }
+						it { expect(object  ).to eq :new_object }
+
+						its_result { is_expected.to eq 'new_object' }
+					end
 				end
 			end
 

@@ -25,10 +25,16 @@ module RSpec # :nodoc:
 			end
 
 			class_methods do
-				def subject(&)
-					prepend Module.new {
-						define_method(:subject) { super().unbind.bind instance_eval(&) }
-					}
+				def subject(name = nil, &)
+					if name
+						alias_method :__subject__, let(name, &)
+
+						self::NamedSubjectPreventSuper.__send__ :define_method, name do
+							raise NotImplementedError, '`super` in named subjects is not supported'
+						end
+					else
+						let :__subject__, &
+					end
 				end
 
 				private

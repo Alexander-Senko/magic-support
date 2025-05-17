@@ -4,9 +4,18 @@
 
 #### Method specs
 
+##### Changed
+
+- Set tested method’s owner to an overridden subject if any.
+
 ##### Added
 
 - Support for nesting of method specs.
+- Support for named overridden subjects to follow the original RSpec API.
+
+##### Fixed
+
+- `receiver` should always be equal to `subject.receiver`.
 
 
 ## [0.2.1] — 2025-05-13
