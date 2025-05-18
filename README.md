@@ -221,22 +221,9 @@ end
 
 ##### Nesting
 
+One may nest method specs.
 This could be useful when a method being tested affects other methods.
-
-> [!NOTE]
-> `setup_method_context` should be called explicitly for the inner one to initialize properly.
-
-```ruby
-RSpec.describe MyClass do
-  describe '.my_method' do 
-    describe '#affected_method' do
-      setup_method_context
-
-      # put the examples here
-    end
-  end
-end
-```
+See the spec for examples.
 
 ## Development
 

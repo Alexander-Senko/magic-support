@@ -11,7 +11,7 @@ module RSpec # :nodoc:
 		}
 				.map { |name, pattern| "(?<#{name}>#{pattern})" }
 				.join
-				.then { /(?:^|\s)#{_1}(?:$|\s)/ } # may be surrounded by some text
+				.then { /(?:^|\s)#{_1}\b/ } # may be surrounded by some text
 
 		# @api public
 		# Container module for method specs.
@@ -100,6 +100,12 @@ module RSpec # :nodoc:
 						.once
 			end
 		end
+	end
+
+	shared_context :nested_method, full_description: /(.*#{Method::REFERENCE}){2,}/ do
+		next unless metadata[:description].match? Method::REFERENCE
+
+		setup_method_context
 	end
 
 	configure do

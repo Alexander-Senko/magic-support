@@ -6,7 +6,7 @@
 
 ##### Added
 
-- `setup_method_context` for en explicit initialization when needed.
+- Support for nesting of method specs.
 
 
 ## [0.2.1] — 2025-05-13

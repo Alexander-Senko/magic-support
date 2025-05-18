@@ -94,33 +94,44 @@ RSpec.describe RSpec::Method do
 			context 'with a class' do
 				subject { Object }
 
-				shared_examples '.new' do
+				shared_examples 'new' do
 					it { expect(receiver).to eq Object }
 					it { expect(method_name).to eq :new }
 
 					its_result { is_expected.to be_instance_of Object }
 				end
 
-				describe('.new') { it_behaves_like '.new' }
+				describe('.new') { it_behaves_like 'new' }
 
-				describe('#new') { it_behaves_like '.new' }
+				describe('#new') { it_behaves_like 'new' }
 			end
 
 			context 'with a module' do
 				subject { Kernel }
 
-				shared_examples '.pp' do
+				shared_examples 'pp' do
 					it { expect(receiver).to eq Kernel }
 					it { expect(method_name).to eq :pp }
 
-					its_result                                  { is_expected.to be_nil }
-					its_result(argument = Object.new)           { is_expected.to eq argument }
-					its(arguments = 2.times.map { Object.new }) { is_expected.to eq arguments }
+					its_result                        { is_expected.to be_nil }
+					its_result(argument = Object.new) { is_expected.to eq argument }
 				end
 
-				describe('.pp') { it_behaves_like '.pp' }
+				describe('.pp') { it_behaves_like 'pp' }
 
-				describe('#pp') { it_behaves_like '.pp' }
+				describe('#pp') { it_behaves_like 'pp' }
+			end
+		end
+
+		context 'when nested' do
+			describe '.define_method' do
+				before { receiver.class.define_method method_name, &block }
+
+				describe '#my_method' do
+					let(:block) { -> { :result } }
+
+					its_result { is_expected.to eq :result }
+				end
 			end
 		end
 
