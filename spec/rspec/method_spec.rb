@@ -55,52 +55,6 @@ RSpec.describe RSpec::Method do
 				end
 			end
 
-			context 'when private' do
-				describe '#puts' do
-					it { expect(receiver).to eq object }
-					it { expect(method_name).to eq :puts }
-
-					its_result { is_expected.to be_nil }
-				end
-			end
-
-			context 'when missing' do
-				let :have_emitted_warning do
-					have_received(:warn)
-							.with(/Testing undefined method/)
-				end
-
-				before { allow(self).to receive :warn }
-
-				describe '#undefined_method' do
-					it { expect(receiver).to eq object }
-					it { expect(method_name).to eq :undefined_method }
-
-					it { expect { subject[] }.to raise_error NoMethodError }
-					it { expect { subject   }.not_to raise_error }
-
-					it 'emits a warning' do
-						subject
-
-						expect(self).to have_emitted_warning
-								.once
-					end
-
-					context 'with bugs' do
-						let(:method_name) { name }
-
-						it { expect { subject[] }.to raise_error NoMethodError }
-						it { expect { subject   }.to raise_error NoMethodError }
-
-						it 'doesn’t emit a warning' do
-							subject rescue nil
-
-							expect(self).not_to have_emitted_warning
-						end
-					end
-				end
-			end
-
 			context 'with a class' do
 				subject { Object }
 
@@ -130,6 +84,64 @@ RSpec.describe RSpec::Method do
 				describe('.pp') { it_behaves_like 'pp' }
 
 				describe('#pp') { it_behaves_like 'pp' }
+			end
+		end
+
+		context 'with punctuation suffixes' do
+			describe '#nil?' do
+				it { is_expected.to be_a Method }
+				it { expect(receiver).to eq subject.receiver }
+				it { expect(method_name).to eq :nil? }
+
+				its_result { is_expected.to be false }
+			end
+		end
+
+		context 'when private' do
+			describe '#puts' do
+				it { is_expected.to be_a Method }
+				it { expect(receiver).to eq subject.receiver }
+				it { expect(method_name).to eq :puts }
+
+				its_result { is_expected.to be_nil }
+			end
+		end
+
+		context 'when missing' do
+			let :have_emitted_warning do
+				have_received(:warn)
+						.with(/Testing undefined method/)
+			end
+
+			before { allow(self).to receive :warn }
+
+			describe '#undefined_method' do
+				it { is_expected.to be_a Proc }
+				it { expect(receiver).to eq described_class }
+				it { expect(method_name).to eq :undefined_method }
+
+				it { expect { subject.call }.to raise_error NoMethodError }
+				it { expect { subject      }.not_to raise_error }
+
+				it 'emits a warning' do
+					subject
+
+					expect(self).to have_emitted_warning
+							.once
+				end
+
+				context 'with bugs' do
+					let(:method_name) { name }
+
+					it { expect { subject.call }.to raise_error NoMethodError }
+					it { expect { subject      }.to raise_error NoMethodError }
+
+					it 'doesn’t emit a warning' do
+						subject rescue nil
+
+						expect(self).not_to have_emitted_warning
+					end
+				end
 			end
 		end
 

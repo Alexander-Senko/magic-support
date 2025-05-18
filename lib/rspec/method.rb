@@ -11,7 +11,7 @@ module RSpec # :nodoc:
 		}
 				.map { |name, pattern| "(?<#{name}>#{pattern})" }
 				.join
-				.then { /(?:^|\s)#{_1}\b/ } # may be surrounded by some text
+				.then { /(?:^|\s)#{_1}(?:$|\s)?/ } # may be surrounded by some text
 
 		# @api public
 		# Container module for method specs.
